@@ -1,0 +1,24 @@
+.button{
+  background-color: #3e3e3e !important;
+}
+.btn{
+  cursor: pointer;
+}
+.tab > b + b{
+  margin-left:15px;
+}
+#content-add b{
+  margin-left:15px;
+}
+[class*="success-update"]{
+  background-color: #edffe9;
+}
+[class*="success-update"] > td{
+  background-color: transparent !important;
+}
+.add-to-form-box, .add-label-box{
+  background-color: #efefef;
+}
+.min-max{
+  width:40px;
+}
