@@ -65,12 +65,15 @@ class ControllerModuleQf extends Controller {
       }
 
       $this->data['button_submit'] = $this->language->get('button_submit');
-      $this->data['action'] = $this->url->link('module/qf', 'fn=' . $this->request->get['fn'] . $url, 'SSL');
+
       if(isset($this->request->get['popup']) && (int)$this->request->get['popup']==1){
         $this->data['popup'] = true;
+        $url .='&popup=1';
       }else{
         $this->data['popup'] = false;
       }
+
+      $this->data['action'] = $this->url->link('module/qf', 'fn=' . $this->request->get['fn'] . $url, 'SSL');
 
   		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/qf.tpl')) {
   			$this->template = $this->config->get('config_template') . '/template/module/qf.tpl';

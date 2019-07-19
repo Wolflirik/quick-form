@@ -76,6 +76,59 @@
                   });
                 });
               --></script>
+              <!--simple popup styles-->
+              <style>
+                .qf-popup{
+                  position: fixed;
+                  z-index: 1000;
+                  top: 0;
+                  left: 0;
+                  right: 0;
+                  bottom: 1px; 
+                  margin-bottom:-2px; 
+                  padding-bottom:1px;
+                  overflow: hidden;
+                  padding:0 15px;
+                  pointer-events: none;
+                  visibility: hidden;
+                  text-align: center;
+                  white-space: nowrap;
+                  background-color: rgba(0,0,0,0.3);
+                }
+                .qf-popup:after{
+                  display:inline-block;
+                  content: "";
+                  vertical-align: middle;
+                  width: 0;
+                  height: 100%;
+                }
+                .qf-popup.open{
+                  pointer-events: auto;
+                  overflow-y: scroll;
+                  visibility: visible;
+                  display: flex;
+                  align-items: center;
+                }
+                .qf-popup.open.init{
+                  display: block;
+                  align-items: unset;
+                }
+                .qf-popup.open.init > .qf-box{
+                  display:inline-block;
+                  text-align:left;
+                }
+                .qf-popup > .qf-box{
+                  position: relative;
+                  z-index: 10;
+                  display: none;
+                  vertical-align: middle;
+                  max-width: 320px;
+                  margin:0 auto;
+                  background-color: #fff;
+                  padding: 15px 25px;
+                  border-radius: 4px;
+                }
+              </style>
             ]]></add>
         </operation>
     </file>
