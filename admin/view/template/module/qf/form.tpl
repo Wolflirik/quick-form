@@ -35,7 +35,7 @@
                 <div class="buttons"><a class="button update-form"><?php echo $btn_save; ?></a></div>
               </div>
               <div class="content">
-                <p class="attention"><?php echo $text_form_change_warning; ?></p>
+                <br>
                 <span><?php echo $form['static_box']; ?></span>
                 <br>
                 <br>
@@ -106,8 +106,9 @@
                   </table>
                 </div>
                 <div id="tabs-block-<?php echo $form['id']; ?>-labels">
+                  <p class="attention"><?php echo $text_form_change_warning; ?></p>
                   <?php if(empty($form['labels'])){ ?>
-                    <p class="attention"><?php echo $text_form_labels_warning; ?></p>
+                    <p class="attention attention--count"><?php echo $text_form_labels_warning; ?></p>
                   <?php } ?>
                   <table class="list">
                     <thead>
@@ -177,14 +178,15 @@
     	});
     },
 
-    'update': function() {
-      var form = $(this).closest('form'),
+    'update': function(el, fcl = 0) {
+      var form = el.closest('form'),
           formData = form.serialize(),
-          id = $(this).closest('form').parent().attr('rel');
+          id = el.closest('form').parent().attr('rel');
+
       $.ajax({
     		url: 'index.php?route=module/qf/updateForm&token=<?php echo $token; ?>',
     		type: 'post',
-        data: formData+'&id='+id,
+        data: formData+'&id='+id+'&change_l='+fcl,
     		dataType: 'json',
     		success: function(json) {
           console.log(json);
@@ -246,14 +248,14 @@
 
       wrap.before(html);
 
-      wrap.closest('.list').parent().find('.attention').remove();
+      wrap.closest('.list').parent().find('.attention--count').remove();
     },
 
     'remove': function() {
       var wrap = $(this).closest('.list');
       $(this).closest('.label-box').remove();
       if(wrap.find('.label-box').length == 0){
-        wrap.before('<p class="attention"><?php echo $text_form_labels_warning; ?></p>');
+        wrap.before('<p class="attention attention--count"><?php echo $text_form_labels_warning; ?></p>');
       }
     }
   }
@@ -263,10 +265,31 @@
 
     $(document).on('click', '#content-add', form.create);
     $(document).on('mousedown', '.tab .btn', form.delete);
-    $(document).on('click', '.update-form', form.update);
+    $(document).on('click', '.update-form', function() {
+      var el = $(this);
+      $( "#dialog-confirm" ).dialog({
+        resizable: false,
+        height:200,
+        modal: true,
+        buttons: {
+          "Yes": function() {
+            $( this ).dialog( "close" );
+            form.update(el, 1);
+          },
+          "No": function() {
+            $( this ).dialog( "close" );
+            form.update(el, 0);
+          }
+        }
+      });
+    });
 
     $(document).on('click', '.add-label', label.add);
     $(document).on('click', '.remove-label', label.remove);
   });
 --></script>
+
+<div id="dialog-confirm">
+  <p><span class="ui-icon ui-icon-alert" style="float:left; margin:0 7px 20px 0;"></span><?php echo $text_form_label_set; ?></p>
+</div>
 <?php echo $footer; ?>

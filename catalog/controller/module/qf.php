@@ -89,9 +89,20 @@ class ControllerModuleQf extends Controller {
 
   private function validate($form) {
     if(!empty($this->request->post)){
-      $this->html = '<table>';
+      $this->html = '
+      <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/1999/REC-html401-19991224/strict.dtd">
+        <html>
+        <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title><?php echo $title; ?></title>
+        </head>
+        <body style="font-family: Arial, Helvetica, sans-serif; font-size: 12px; color: #000000;">
+        <table style="border-collapse: collapse; width: 100%; border-top: 1px solid #DDDDDD; border-left: 1px solid #DDDDDD; margin-bottom: 20px;">
+          <tbody>
+      ';
       if(isset($this->request->get['pid'])){
-        $this->html .= '<tr><td>' . $this->language->get('text_id') . ':</td><td>' . (int)$this->request->get['pid'] . '</td></tr>';
+        $this->html .= '<tr>
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->language->get('text_id') . ':</td><td style="font-size: 12px;  border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . (int)$this->request->get['pid'] . '</td></tr>';
       }
       foreach($form['labels'] as $key => $label){
         switch((int)$label['type']){
@@ -100,8 +111,7 @@ class ControllerModuleQf extends Controller {
           case 3:
             if(isset($this->request->post[$key])){
               if($label['min'] != '-1' && mb_strlen(trim($this->request->post[$key]), 'UTF-8') < (int)$label['min'] ||
-                 $label['max'] != '-1' && mb_strlen(trim($this->request->post[$key]), 'UTF-8') > (int)$label['max'] ||
-                 !empty($label['pattern']) && !preg_match($label['pattern'], trim($this->request->post[$key]))){
+                 $label['max'] != '-1' && mb_strlen(trim($this->request->post[$key]), 'UTF-8') > (int)$label['max']){
                 $this->error[$key] = $label['text_error'];
               }
             }else{
@@ -125,7 +135,7 @@ class ControllerModuleQf extends Controller {
             }
           break;
         }
-        $this->html .= '<tr><td>' . $label['text_admin'] . ':</td><td>' . $this->request->post[$key] . '</td></tr>';
+        $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
       }
       $this->html = '</table>';
 

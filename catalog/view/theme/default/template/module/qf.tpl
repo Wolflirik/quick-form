@@ -14,28 +14,32 @@
       <?php if(!isset($success)){ ?>
         <form action="<?php echo $action; ?>" method="POST" class="qf-box__form">
           <span class="qf-box__text"><?php echo $form['text_before']; ?></span>
+          <?php $mask = array(); ?>
           <?php foreach($form['labels'] as $key => $label) { ?>
             <div class="qf-box__group">
               <?php if((int)$label['type'] == 3){ ?>
-
-                <label class="qf-box__group-label"
-                  for="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>">
-                  <?php echo $label['text']; ?>
-                </label>
+                <?php if(!empty($label['text'])){ ?>
+                  <label class="qf-box__group-label"
+                    for="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>">
+                    <?php echo $label['text']; ?>
+                  </label>
+                <?php } ?>
                 <textarea class="qf-box__group-textarea"
                   name="<?php echo $key; ?>"
                   id="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
                   <?php if(!empty($label['placeholder'])){ ?>
                     placeholder="<?php echo $label['placeholder']; ?>"
                   <?php } ?>><?php if(!empty($label['value'])){ ?><?php echo $label['value']; ?><?php } ?></textarea>
+                  <?php if(!empty($label['pattern'])){ $mask[$key.'-'.$label['id'].'-'.$form['id']] = $key; } ?>
 
               <?php } ?>
               <?php if((int)$label['type'] == 1){ ?>
-
-                <label class="qf-box__group-label"
-                  for="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>">
-                  <?php echo $label['text']; ?>
-                </label>
+                <?php if(!empty($label['text'])){ ?>
+                  <label class="qf-box__group-label"
+                    for="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>">
+                    <?php echo $label['text']; ?>
+                  </label>
+                <?php } ?>
                 <input type="text" class="qf-box__group-inp"
                   name="<?php echo $key; ?>"
                   id="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
@@ -45,6 +49,7 @@
                   <?php if(!empty($label['placeholder'])){ ?>
                     placeholder="<?php echo $label['placeholder']; ?>"
                   <?php } ?>>
+                <?php if(!empty($label['pattern'])){ $mask[$key.'-'.$label['id'].'-'.$form['id']] = $key; } ?>
 
               <?php } ?>
               <?php if((int)$label['type'] == 2){ ?>
@@ -73,6 +78,24 @@
           <button type="submit" class="qf-box__btn"><?php echo $button_submit; ?></button>
           <span class="qf-box__text"><?php echo $form['text_after']; ?></span>
         </form>
+        <?php if(!empty($mask)) { ?>
+          <script type="text/javascript">
+            jQuery.cachedScript = function( url, options ) {
+              options = $.extend( options || {}, {
+                dataType: "script",
+                // cache: true,
+                url: url
+              });
+              return jQuery.ajax( options );
+            };
+             
+            $.cachedScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js').done(function( script, textStatus ) {
+              <?php foreach($mask as $k => $m){ ?>
+                $('#<?php echo $k; ?>').mask('<?php echo $form['labels'][$m]['pattern']; ?>', {placeholder: '<?php echo $form['labels'][$m]['placeholder']; ?>'});
+              <?php } ?>
+            });
+          </script>
+        <?php } ?>
       <?php }else{ ?>
         <span class="qf-box__text"><?php echo $success; ?></span>
         <?php if(!empty($form['yandex'])) { ?>

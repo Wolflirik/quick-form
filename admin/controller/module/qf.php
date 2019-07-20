@@ -34,6 +34,7 @@ class ControllerModuleQf extends Controller {
     $this->data['text_form_labels_warning'] = $this->language->get('text_form_labels_warning');
     $this->data['text_form_change_warning'] = $this->language->get('text_form_change_warning');
     $this->data['text_form_ident_error'] = $this->language->get('text_form_ident_error');
+    $this->data['text_form_label_set'] = $this->language->get('text_form_label_set');
 
     $this->data['forms'] = $this->model_module_qf->getForms();
 
@@ -87,7 +88,6 @@ class ControllerModuleQf extends Controller {
       }else{
         $this->json['error'] = $this->error;
       }
-      // $this->json = $this->request->post;
     }
 
     $this->response->setOutput(json_encode($this->json));
@@ -267,7 +267,6 @@ class ControllerModuleQf extends Controller {
       break;
       case 'label':
         if((!isset($this->request->post['name']) || isset($this->request->post['name']) && empty($this->request->post['name']))
-          || (!isset($this->request->post['text']) || isset($this->request->post['text']) && empty($this->request->post['text']))
           || (!isset($this->request->post['text_admin']) || isset($this->request->post['text_admin']) && empty($this->request->post['text_admin']))){
           $this->error = $this->language->get('text_label_error');
           return false;

@@ -88,10 +88,13 @@ class ModelModuleQf extends Model {
   }
 
   public function updateForm($data) {
-    $this->db->query("DELETE FROM " . DB_PREFIX . "qf_label_to_form WHERE form_id='" . (int)$data['id'] . "'");
-    $this->db->query("DELETE FROM " . DB_PREFIX . "qf_content WHERE form_id='" . (int)$data['id'] . "'");
+    if((int)$data['change_l'] == 1){
+      $this->db->query("DELETE FROM " . DB_PREFIX . "qf_label_to_form WHERE form_id='" . (int)$data['id'] . "'");
+      $this->db->query("DELETE FROM " . DB_PREFIX . "qf_content WHERE form_id='" . (int)$data['id'] . "'");
+    }
+
     $this->db->query("UPDATE " . DB_PREFIX . "qf SET name='" . $this->db->escape($data['name']) . "', class='" . $this->db->escape($data['class']) . "', text_after='" . $this->db->escape($data['text_after']) . "', text_before='" . $this->db->escape($data['text_before']) . "', yandex='" . $this->db->escape($data['yandex']) . "', success='" . $this->db->escape($data['success']) . "' WHERE id='" . (int)$data['id'] . "'");
-    if(isset($data['labels']) && !empty($data['labels'])){
+    if(isset($data['labels']) && !empty($data['labels']) && (int)$data['change_l'] == 1){
       foreach($data['labels'] as $key => $label){
         $this->db->query("INSERT INTO " . DB_PREFIX . "qf_label_to_form (label_id, form_id, sort) VALUES ('" . (int)$key . "', '" . (int)$data['id'] . "', '" . $label['sort'] . "')");
       }
@@ -103,7 +106,7 @@ class ModelModuleQf extends Model {
     $this->db->query("INSERT INTO " . DB_PREFIX . "qf_label (name, type, text, text_admin, placeholder, pattern, min, max, text_error) VALUES ('', '" . (int)$data['type'] . "', '', '', '', '', '-1', '-1', '')");
     $id = $this->db->getLastId();
     $name = floor((1 + rand(0, 99999)) * 0x10000);
-    $this->db->query("UPDATE " . DB_PREFIX . "qf_label SET name='" . $name . "', text='" . (int)$id . "', text_admin='" . (int)$id . "' WHERE id='" . (int)$id . "'");
+    $this->db->query("UPDATE " . DB_PREFIX . "qf_label SET name='" . $name . "', text_admin='" . (int)$id . "' WHERE id='" . (int)$id . "'");
     return array(
       'id' => $id,
       'name' => $name
