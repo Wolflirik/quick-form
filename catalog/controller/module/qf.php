@@ -137,7 +137,7 @@ class ControllerModuleQf extends Controller {
         }
         $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
       }
-      $this->html = '</table>';
+      $this->html = '</tbody></table></body></html>';
 
       if(empty($this->error)){
         return true;
