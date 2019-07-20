@@ -65,7 +65,7 @@
 
               <?php } ?>
 
-              <?php if(isset(${'error_'.$key})){ ?>
+              <?php if(isset(${'error_'.$key}) && !empty(${'error_'.$key})){ ?>
                 <span class="qf-box__group-danger"><?php echo ${'error_'.$key}; ?></span>
               <?php } ?>
             </div>
