@@ -42,7 +42,7 @@ class ControllerModuleQf extends Controller {
             $mail->setTo($this->config->get('config_email'));
           }
   				$mail->setFrom($this->config->get('config_email'));
-  	  		$mail->setSender('QUICK|FORM');
+  	  		$mail->setSender($this->language->get('title'));
   	  		$mail->setSubject($this->data['form']['name'], ENT_QUOTES, 'UTF-8');
           $mail->setHtml($this->html);
   	  		// $mail->setText(strip_tags(html_entity_decode($this->request->post['enquiry'], ENT_QUOTES, 'UTF-8')));
