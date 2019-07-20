@@ -32,6 +32,7 @@ class ModelModuleQf extends Model {
         'yandex' => $result->row['yandex'],
         'success' => $result->row['success'],
         'email' => $result->row['email'],
+        'submit' => $result->row['submit'],
         'labels' => $labels_arr
       );
       return $data;

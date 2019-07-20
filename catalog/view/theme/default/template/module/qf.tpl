@@ -1,22 +1,22 @@
 <?php if(!empty($form['labels'])){ ?>
   <div class="qf-box <?php echo $form['class']; ?>">
-    <div class="qf-box__head">
-      <?php if($product){ ?>
-        <?php echo $product['name']; ?>
-      <?php }else{ ?>
-        <?php echo $form['name']; ?>
-      <?php }?>
-      <?php if($popup){ ?>
+    <?php if($popup){ ?>
+      <div class="qf-box__head">
+        <?php if($product){ ?>
+          <?php echo $product['name']; ?>
+        <?php }else{ ?>
+          <?php echo $form['name']; ?>
+        <?php }?>
         <button class="qf-box__btn qf-box__btn--close">&times;</button>
-      <?php } ?>
-    </div>
+      </div>
+    <?php } ?>
     <div class="qf-box__body">
       <?php if(!isset($success)){ ?>
         <form action="<?php echo $action; ?>" method="POST" class="qf-box__form">
           <span class="qf-box__text"><?php echo htmlspecialchars_decode($form['text_before']); ?></span>
           <?php $mask = array(); ?>
           <?php foreach($form['labels'] as $key => $label) { ?>
-            <div class="qf-box__group">
+            <div class="qf-box__group <?php if(isset(${'error_'.$key})){ ?> qf-box__group--error<?php } ?>">
               <?php if((int)$label['type'] == 3){ ?>
                 <?php if(!empty($label['text'])){ ?>
                   <label class="qf-box__group-label"
@@ -75,7 +75,13 @@
           <?php if(isset($error_not_label)){ ?>
             <span class="qf-box__group-danger"><?php echo $error_not_label; ?></span>
           <?php } ?>
-          <button type="submit" class="qf-box__btn"><?php echo $button_submit; ?></button>
+          <button type="submit" class="qf-box__btn">
+            <?php if(!empty($form['submit'])){ ?>
+              <?php echo $form['submit']; ?>
+            <?php }else{ ?>
+              <?php echo $button_submit; ?>
+            <?php } ?>
+          </button>
           <span class="qf-box__text"><?php echo htmlspecialchars_decode($form['text_after']); ?></span>
         </form>
         <?php if(!empty($mask)) { ?>

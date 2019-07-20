@@ -36,6 +36,7 @@ class ControllerModuleQf extends Controller {
     $this->data['text_form_ident_error'] = $this->language->get('text_form_ident_error');
     $this->data['text_form_label_set'] = $this->language->get('text_form_label_set');
     $this->data['text_form_email'] = $this->language->get('text_form_email');
+    $this->data['text_form_submit'] = $this->language->get('text_form_submit');
 
     $this->data['forms'] = $this->model_module_qf->getForms();
 

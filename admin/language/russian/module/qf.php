@@ -29,6 +29,7 @@ $_['text_static_box']  = 'Код для вставки статического 
 $_['text_popup_box']  = 'Код для вставки popup блока формы: <button class="qf-load-btn" data-link="%s">%s</button> К атрибуту data-link возможно добавить id товара: &pid=id_товара.';
 $_['text_form_label_set']  = 'Вы изменяли поля во вкладке "задать поля"?';
 $_['text_form_email']  = 'Email (ex1.mail.ru,ex2@mail.ru...):';
+$_['text_form_submit']  = 'Текст кнопки:';
 
 
 $_['text_label_add']  = 'Добавить поле:';
