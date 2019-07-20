@@ -35,6 +35,7 @@ class ControllerModuleQf extends Controller {
     $this->data['text_form_change_warning'] = $this->language->get('text_form_change_warning');
     $this->data['text_form_ident_error'] = $this->language->get('text_form_ident_error');
     $this->data['text_form_label_set'] = $this->language->get('text_form_label_set');
+    $this->data['text_form_email'] = $this->language->get('text_form_email');
 
     $this->data['forms'] = $this->model_module_qf->getForms();
 

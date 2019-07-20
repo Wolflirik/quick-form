@@ -13,7 +13,7 @@
     <div class="qf-box__body">
       <?php if(!isset($success)){ ?>
         <form action="<?php echo $action; ?>" method="POST" class="qf-box__form">
-          <span class="qf-box__text"><?php echo $form['text_before']; ?></span>
+          <span class="qf-box__text"><?php echo htmlspecialchars_decode($form['text_before']); ?></span>
           <?php $mask = array(); ?>
           <?php foreach($form['labels'] as $key => $label) { ?>
             <div class="qf-box__group">
@@ -76,14 +76,13 @@
             <span class="qf-box__group-danger"><?php echo $error_not_label; ?></span>
           <?php } ?>
           <button type="submit" class="qf-box__btn"><?php echo $button_submit; ?></button>
-          <span class="qf-box__text"><?php echo $form['text_after']; ?></span>
+          <span class="qf-box__text"><?php echo htmlspecialchars_decode($form['text_after']); ?></span>
         </form>
         <?php if(!empty($mask)) { ?>
           <script type="text/javascript">
             jQuery.cachedScript = function( url, options ) {
               options = $.extend( options || {}, {
                 dataType: "script",
-                // cache: true,
                 url: url
               });
               return jQuery.ajax( options );

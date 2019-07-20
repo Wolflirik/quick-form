@@ -36,7 +36,11 @@ class ControllerModuleQf extends Controller {
     			$mail->password = $this->config->get('config_smtp_password');
     			$mail->port = $this->config->get('config_smtp_port');
     			$mail->timeout = $this->config->get('config_smtp_timeout');
-          $mail->setTo($this->config->get('config_email'));
+          if(!empty($this->data['form']['email'])){
+            $mail->setTo($this->data['form']['email']);
+          }else{
+            $mail->setTo($this->config->get('config_email'));
+          }
   				$mail->setFrom($this->config->get('config_email'));
   	  		$mail->setSender('QUICK|FORM');
   	  		$mail->setSubject($this->data['form']['name'], ENT_QUOTES, 'UTF-8');
@@ -137,7 +141,7 @@ class ControllerModuleQf extends Controller {
         }
         $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
       }
-      $this->html = '</tbody></table></body></html>';
+      $this->html .= '</tbody></table></body></html>';
 
       if(empty($this->error)){
         return true;

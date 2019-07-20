@@ -12,6 +12,7 @@ class ModelModuleQf extends Model {
         'text_after' => $result->row['text_after'],
         'yandex' => $result->row['yandex'],
         'success' => $result->row['success'],
+        'email' => $result->row['email'],
         'static_box' => str_replace('&amp;', '&', htmlspecialchars(
           sprintf($this->language->get('text_static_box'),
           str_replace('/admin', '',
@@ -74,7 +75,7 @@ class ModelModuleQf extends Model {
   }
 
   public function createForm() {
-    $this->db->query("INSERT INTO " . DB_PREFIX . "qf (name, class, text_before, text_after, yandex, success) VALUES ('', '', '', '', '', '')");
+    $this->db->query("INSERT INTO " . DB_PREFIX . "qf (name, class, text_before, text_after, yandex, success, email) VALUES ('', '', '', '', '', '', '')");
     $id = $this->db->getLastId();
     $this->db->query("UPDATE " . DB_PREFIX . "qf SET name='" . (int)$id . "', class='" . (int)$id . "' WHERE id='" . (int)$id . "'");
     return $id;
@@ -93,7 +94,7 @@ class ModelModuleQf extends Model {
       $this->db->query("DELETE FROM " . DB_PREFIX . "qf_content WHERE form_id='" . (int)$data['id'] . "'");
     }
 
-    $this->db->query("UPDATE " . DB_PREFIX . "qf SET name='" . $this->db->escape($data['name']) . "', class='" . $this->db->escape($data['class']) . "', text_after='" . $this->db->escape($data['text_after']) . "', text_before='" . $this->db->escape($data['text_before']) . "', yandex='" . $this->db->escape($data['yandex']) . "', success='" . $this->db->escape($data['success']) . "' WHERE id='" . (int)$data['id'] . "'");
+    $this->db->query("UPDATE " . DB_PREFIX . "qf SET name='" . $this->db->escape($data['name']) . "', class='" . $this->db->escape($data['class']) . "', text_after='" . $this->db->escape($data['text_after']) . "', text_before='" . $this->db->escape($data['text_before']) . "', yandex='" . $this->db->escape($data['yandex']) . "', success='" . $this->db->escape($data['success']) . "', email='" . $this->db->escape($data['email']) . "' WHERE id='" . (int)$data['id'] . "'");
     if(isset($data['labels']) && !empty($data['labels']) && (int)$data['change_l'] == 1){
       foreach($data['labels'] as $key => $label){
         $this->db->query("INSERT INTO " . DB_PREFIX . "qf_label_to_form (label_id, form_id, sort) VALUES ('" . (int)$key . "', '" . (int)$data['id'] . "', '" . $label['sort'] . "')");
@@ -196,6 +197,7 @@ class ModelModuleQf extends Model {
       `text_after` varchar(255) NOT NULL,
       `yandex` varchar(200) NOT NULL,
       `success` varchar(255) NOT NULL,
+      `email` text NOT NULL,
       PRIMARY KEY (`id`)
     ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8");
 
