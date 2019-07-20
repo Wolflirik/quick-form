@@ -24,9 +24,8 @@
                     <?php echo $label['text']; ?>
                   </label>
                 <?php } ?>
-                <textarea class="qf-box__group-textarea"
+                <textarea class="qf-box__group-textarea <?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
                   name="<?php echo $key; ?>"
-                  id="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
                   <?php if(!empty($label['placeholder'])){ ?>
                     placeholder="<?php echo $label['placeholder']; ?>"
                   <?php } ?>><?php if(!empty($label['value'])){ ?><?php echo $label['value']; ?><?php } ?></textarea>
@@ -40,9 +39,8 @@
                     <?php echo $label['text']; ?>
                   </label>
                 <?php } ?>
-                <input type="text" class="qf-box__group-inp"
+                <input type="text" class="qf-box__group-inp <?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
                   name="<?php echo $key; ?>"
-                  id="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
                   <?php if(!empty($label['value'])){ ?>
                     value="<?php echo $label['value']; ?>"
                   <?php } ?>
@@ -96,7 +94,7 @@
              
             $.cachedScript('https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.15/jquery.mask.min.js').done(function( script, textStatus ) {
               <?php foreach($mask as $k => $m){ ?>
-                $('#<?php echo $k; ?>').mask('<?php echo $form['labels'][$m]['pattern']; ?>', {placeholder: '<?php echo $form['labels'][$m]['placeholder']; ?>'});
+                $('.<?php echo $k; ?>').mask('<?php echo $form['labels'][$m]['pattern']; ?>', {placeholder: '<?php echo $form['labels'][$m]['placeholder']; ?>'});
               <?php } ?>
             });
           </script>

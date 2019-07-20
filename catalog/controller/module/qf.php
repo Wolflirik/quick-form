@@ -105,8 +105,9 @@ class ControllerModuleQf extends Controller {
           <tbody>
       ';
       if(isset($this->request->get['pid'])){
+        $p_link = $this->url->link('catalog/product', 'product_id=' . (int)$this->request->get['pid'], 'SSL');
         $this->html .= '<tr>
-      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->language->get('text_id') . ':</td><td style="font-size: 12px;  border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . (int)$this->request->get['pid'] . '</td></tr>';
+      <td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->language->get('text_id') . ':</td><td style="font-size: 12px;  border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;"><a href="' . $p_link . '">' . (int)$this->request->get['pid'] . '</a></td></tr>';
       }
       foreach($form['labels'] as $key => $label){
         switch((int)$label['type']){
