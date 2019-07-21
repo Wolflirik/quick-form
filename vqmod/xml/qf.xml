@@ -71,7 +71,7 @@
                     qf.load({block:el});
                   });
 
-                  $('.qf-load-btn').on('click', function() {
+                  $(document)on('click', '.qf-load-btn', function() {
                     qf.load({link:$(this).attr('data-link'), popup:1});
                   });
                 });
