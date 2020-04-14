@@ -35,6 +35,8 @@
                 <?php foreach($content['values'] as $key => $value){ ?>
                   <?php if($key == 'pid'){ ?>
                     <td class="left"><a href="<?php echo $product_link.'&product_id='.$value; ?>" target="_blank" noreferer><?php echo $value; ?></a></td>
+                  <?php }else if(stripos($value, 'qf/') !== false){ ?>
+                    <td class="left"><a href="<?php echo HTTPS_CATALOG . 'download/' . $value; ?>" target="_blank" rel="noopener"><i class="fas fa-download"></i></a></td>
                   <?php }else{ ?>
                     <td class="left"><?php echo $value; ?></td>
                   <?php } ?>

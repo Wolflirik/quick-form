@@ -43,9 +43,9 @@
                 <td class="left"><input type="text" name="name" title="<?php echo $text_label_name; ?>" value="<?php echo $label['name']; ?>"></td>
                 <td class="left"><input type="text" name="text" title="<?php echo $text_label_text_catalog; ?>" value="<?php echo $label['text']; ?>"></td>
                 <td class="left"><input type="text" name="text_admin" title="<?php echo $text_label_text_admin; ?>" value="<?php echo $label['text_admin']; ?>"></td>
-                <td class="left"><input type="text" name="placeholder" title="<?php echo $text_label_placeholder; ?>" value="<?php echo $label['placeholder']; ?>" <?php if($label['type']==2){ ?> disabled<?php } ?>></td>
-                <td class="left"><input type="text" name="pattern" title="<?php echo $text_label_pattern; ?>" value="<?php echo $label['pattern']; ?>"<?php if($label['type']==2){ ?> disabled<?php } ?>></td>
-                <td class="left"><input type="number" name="min" title="<?php echo $text_label_min; ?>" value="<?php echo $label['min']; ?>" class="min-max"<?php if($label['type']==2){ ?> title="<?php echo $text_label_checkbox_min; ?>"<?php } ?>>/<input type="number" name="max" title="<?php echo $text_label_max; ?>" value="<?php echo $label['max']; ?>" class="min-max" <?php if($label['type']==2){ ?> disabled<?php } ?>></td>
+                <td class="left"><input type="text" name="placeholder" title="<?php echo $text_label_placeholder; ?>" value="<?php echo $label['placeholder']; ?>" <?php if($label['type']==2||$label['type']==4){ ?> disabled<?php } ?>></td>
+                <td class="left"><input type="text" name="pattern" title="<?php if($label['type']==4){ echo $text_label_sccess_types; }else{ echo $text_label_pattern; } ?>" value="<?php echo $label['pattern']; ?>"<?php if($label['type']==2){ ?> disabled<?php } ?>></td>
+                <td class="left"><input type="number" name="min" title="<?php if($label['type']==4){ echo $text_label_isset_file; }else{ echo $text_label_min; } ?>" value="<?php echo $label['min']; ?>" class="min-max"<?php if($label['type']==2){ ?> title="<?php echo $text_label_checkbox_min; ?>"<?php } ?>>/<input type="number" name="max" title="<?php if($label['type']==2){ echo $text_label_max; }else{ echo $text_label_max_upload_size; } ?>" value="<?php echo $label['max']; ?>" class="min-max" <?php if($label['type']==2){ ?> disabled<?php } ?>></td>
                 <td class="left"><input type="text" name="text_error" title="<?php echo $text_label_error_text; ?>" value="<?php echo $label['text_error']; ?>"<?php if($label['type']==2){ ?> title="<?php echo $text_label_checkbox_error_text; ?>"<?php } ?>></td>
                 <td class="right"><a class="button update-label" role="button"><?php echo $btn_refresh; ?></a>&nbsp;<a class="button delete-label" role="button"><?php echo $btn_delete; ?></a></td>
               </tr>
@@ -56,6 +56,7 @@
                   <option value="1"><?php echo $text_label_add_type_1; ?></option>
                   <option value="2"><?php echo $text_label_add_type_2; ?></option>
                   <option value="3"><?php echo $text_label_add_type_3; ?></option>
+                  <option value="4"><?php echo $text_label_add_type_4; ?></option>
                 </select>
               </td>
               <td class="right"><a class="button create-label"><?php echo $btn_plus; ?></a></td>
@@ -81,7 +82,38 @@
         dataType: 'json',
         success: function(json) {
           if (json.hasOwnProperty('success')) {
-            var html = '<tr class="label-box"> <td class="left"> <input type="hidden" name="id" value="'+json.success.id+'"> <input type="hidden" name="type" value="'+type+'"> '+typeText+' </td> <td class="left"><input type="text" name="name" title="<?php echo $text_label_name; ?>" value="'+json.success.name+'"></td> <td class="left"><input type="text" name="text" title="<?php echo $text_label_text_catalog; ?>" value="'+json.success.id+'"></td> <td class="left"><input type="text" name="text_admin" title="<?php echo $text_label_text_admin; ?>" value="'+json.success.id+'"></td> <td class="left"><input type="text" name="placeholder" title="<?php echo $text_label_placeholder; ?>" value=""'+(type==2?' disabled':'')+'></td> <td class="left"><input type="text" name="pattern" title="<?php echo $text_label_pattern; ?>" value=""'+(type==2?' disabled':'')+'></td> <td class="left"><input type="number" name="min" title="<?php echo $text_label_min; ?>" value="-1" class="min-max"'+(type==2?' title="<?php echo $text_label_checkbox_min; ?>"':'')+'>/<input type="number" name="max" title="<?php echo $text_label_max; ?>" value="-1" class="min-max"'+(type==2?' disabled':'')+'></td> <td class="left"><input type="text" name="text_error" title="<?php echo $text_label_error_text; ?>" value=""'+(type==2?' title="<?php echo $text_label_checkbox_error_text; ?>"':'')+'></td> <td class="right"><a class="button update-label" role="button"><?php echo $btn_refresh; ?></a>&nbsp;<a class="button delete-label" role="button"><?php echo $btn_delete; ?></a></td> </tr>';
+            var html = `
+            <tr class="label-box">
+              <td class="left"> <input type="hidden" name="id" value="${json.success.id}">
+                <input type="hidden" name="type" value="${type}"> ${typeText}
+              </td>
+              <td class="left">
+                <input type="text" name="name" title="<?php echo $text_label_name; ?>" value="${json.success.name}">
+              </td>
+              <td class="left">
+                <input type="text" name="text" title="<?php echo $text_label_text_catalog; ?>" value="${json.success.id}">
+              </td>
+              <td class="left">
+                <input type="text" name="text_admin" title="<?php echo $text_label_text_admin; ?>" value="${json.success.id}">
+              </td>
+              <td class="left">
+                <input type="text" name="placeholder" title="<?php echo $text_label_placeholder; ?>" value=""${(type==2||type==4?' disabled':'')}>
+              </td>
+              <td class="left">
+                <input type="text" name="pattern" title="${(type==4?'<?php echo $text_label_sccess_types; ?>':'<?php echo $text_label_pattern; ?>')}" value=""${(type==2?' disabled':'')}>
+              </td>
+              <td class="left">
+                <input type="number" name="min" title="${(type==4?'<?php echo $text_label_isset_file; ?>':'<?php echo $text_label_min; ?>')}" value="-1" class="min-max"${(type==2?' title="<?php echo $text_label_checkbox_min; ?>"':'')}>/
+                <input type="number" name="max" title="${(type==4?'<?php echo $text_label_max_upload_size; ?>':'<?php echo $text_label_max; ?>')}" value="-1" class="min-max"${(type==2?' disabled':'')}>
+              </td>
+              <td class="left">
+                <input type="text" name="text_error" title="<?php echo $text_label_error_text; ?>" value=""${(type==2?' title="<?php echo $text_label_checkbox_error_text; ?>"':'')}>
+              </td>
+              <td class="right">
+                <a class="button update-label" role="button"><?php echo $btn_refresh; ?></a>&nbsp;
+                <a class="button delete-label" role="button"><?php echo $btn_delete; ?></a>
+              </td>
+            </tr>`;
             table.find('.add-label-box').before(html);
           }
         }

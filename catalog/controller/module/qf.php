@@ -22,6 +22,22 @@ class ControllerModuleQf extends Controller {
             $data['pid'] = $this->request->get['pid'];
           }
 
+          if(isset($data['upload_files']) & !empty($data['upload_files'])){
+            foreach($data['upload_files'] as $key => $tmp_name){
+              if(!empty($tmp_name)){
+                if(!file_exists(DIR_DOWNLOAD . "qf/")){
+                  @mkdir(DIR_DOWNLOAD . "qf/", 0774);
+                }
+                $data[$key] = "qf/" . $this->data['form']['id'] . '-' . hash('crc32b', $this->request->files[$key]['name']) . date("d-m-Y-H-i") . '.' . pathinfo($this->request->files[$key]['name'], PATHINFO_EXTENSION);
+                move_uploaded_file($tmp_name, DIR_DOWNLOAD . $data[$key]);
+              }else{
+                $data[$key] = 0;
+              }
+            }
+            $upload_files = $data['upload_files'];
+            unset($data['upload_files']);
+          }
+
           $data['form_id'] = $this->data['form']['id'];
           //add to DB
           $this->model_module_qf->addContent($data);
@@ -42,10 +58,15 @@ class ControllerModuleQf extends Controller {
             $mail->setTo($this->config->get('config_email'));
           }
   				$mail->setFrom($this->config->get('config_email'));
-  	  		$mail->setSender($this->language->get('title'));
+  	  		$mail->setSender($this->config->get('config_name'));
   	  		$mail->setSubject($this->data['form']['name'], ENT_QUOTES, 'UTF-8');
+          if(isset($upload_files) && !empty($upload_files)){
+            foreach($upload_files as $key => $tmp_name){
+              if(!empty($tmp_name))
+                $mail->addAttachment(DIR_DOWNLOAD . $data[$key]);
+            }
+          }
           $mail->setHtml($this->html);
-  	  		// $mail->setText(strip_tags(html_entity_decode($this->request->post['enquiry'], ENT_QUOTES, 'UTF-8')));
       		$mail->send();
 
           $this->data['success'] = $this->data['form']['success'];
@@ -128,7 +149,7 @@ class ControllerModuleQf extends Controller {
           //checkbox
           case 2:
             if(isset($this->request->post[$key])){
-              if($label['min'] != '-1' && $this->request->post[$key] != 1){
+              if($label['min'] != '-1' && $this->request->post[$key] != 1 && $this->request->files[$key]['type'] != 0){
                 $this->error[$key] = $label['text_error'];
               }
             }else{
@@ -139,8 +160,39 @@ class ControllerModuleQf extends Controller {
               }
             }
           break;
+          case 4:
+            $this->log->write(json_encode($this->request->files));
+            $this->request->post['upload_files'] = array();
+            if(isset($this->request->files[$key]) && (int)$this->request->files[$key]['error'] == 0){
+              if(($label['max'] != '-1' && $this->request->files[$key]['size'] > $label['max']) ||
+                (!empty($label['pattern']) && !in_array($this->request->files[$key]['type'], explode(',', $label['pattern'])))){
+                $this->error[$key] = $label['text_error'];
+              }else{
+                $this->request->post['upload_files'][$key] = $this->request->files[$key]['tmp_name'];
+              }
+            }else{
+              if($label['min'] != '-1' && (int)$this->request->files[$key]['error'] == 4){
+                $this->error[$key] = $label['text_error'];
+              }else if((int)$this->request->files[$key]['error'] != 4){
+                $this->error[$key] = $this->language->get('error_file');
+              }else{
+                $this->request->post['upload_files'][$key] = '';
+              }
+            }
+          break;
         }
-        $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
+
+        
+        if((int)$label['type'] != 4)
+          $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
+      }
+      $url_parsed = parse_url(htmlspecialchars_decode($this->request->server['HTTP_REFERER']));
+      parse_str($url_parsed['query'], $url_variables);
+      if(!empty($url_variables)){
+        foreach($url_variables as $key => $variable) {
+          if(mb_strpos($key, 'utm') !== false)
+            $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $key . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $variable . '</td></tr>';
+        }
       }
       $this->html .= '</tbody></table></body></html>';
 

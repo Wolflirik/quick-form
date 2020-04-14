@@ -17,6 +17,18 @@
           <?php $mask = array(); ?>
           <?php foreach($form['labels'] as $key => $label) { ?>
             <div class="qf-box__group <?php if(isset(${'error_'.$key})){ ?> qf-box__group--error<?php } ?>">
+              <?php if((int)$label['type'] == 4){ ?>
+                <?php if(!empty($label['text'])){ ?>
+                  <span class="qf-box__group-label"
+                    for="<?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>">
+                    <?php echo $label['text']; ?>
+                  </span>
+                <?php } ?>
+                <label>
+                  <input type="file" class="qf-box__group-file <?php echo $key.'-'.$label['id'].'-'.$form['id']; ?>"
+                         name="<?php echo $key; ?>"></input>
+                </label>
+              <?php } ?>
               <?php if((int)$label['type'] == 3){ ?>
                 <?php if(!empty($label['text'])){ ?>
                   <label class="qf-box__group-label"

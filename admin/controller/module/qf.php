@@ -103,6 +103,10 @@ class ControllerModuleQf extends Controller {
     $this->data['text_label_add_type_1'] = $this->language->get('text_label_add_type_1');
     $this->data['text_label_add_type_2'] = $this->language->get('text_label_add_type_2');
     $this->data['text_label_add_type_3'] = $this->language->get('text_label_add_type_3');
+    $this->data['text_label_add_type_4'] = $this->language->get('text_label_add_type_4');
+    $this->data['text_label_sccess_types'] = $this->language->get('text_label_sccess_types');
+    $this->data['text_label_max_upload_size'] = $this->language->get('text_label_max_upload_size');
+    $this->data['text_label_isset_file'] = $this->language->get('text_label_isset_file');
     $this->data['text_label_name'] = $this->language->get('text_label_name');
     $this->data['text_label_text_catalog'] = $this->language->get('text_label_text_catalog');
     $this->data['text_label_text_admin'] = $this->language->get('text_label_text_admin');
