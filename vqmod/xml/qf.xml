@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <modification>
     <id>Qf - QUICK|FORM</id>
-    <version>17.07.19</version>
-    <vqmver required="true">2.6.0</vqmver>
+    <version>14.04.2020</version>
+    <vqmver>2.0.0</vqmver>
     <author>https://t.me/ulvbern</author>
 
     <file name="catalog/view/theme/*/template/common/footer.tpl">
@@ -10,6 +10,7 @@
             <search position="before"><![CDATA[</body>]]></search>
             <add><![CDATA[
               <div class="qf-popup"></div>
+              <script type="text/javascript" src="catalog/view/javascript/qf.js"></script>
               <!--simple popup styles-->
               <style>
                 .qf-popup{
