@@ -187,13 +187,17 @@ class ControllerModuleQf extends Controller {
           $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $label['text_admin'] . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->post[$key] . '</td></tr>';
       }
       $url_parsed = parse_url(htmlspecialchars_decode($this->request->server['HTTP_REFERER']));
-      parse_str($url_parsed['query'], $url_variables);
-      if(!empty($url_variables)){
-        foreach($url_variables as $key => $variable) {
-          if(mb_strpos($key, 'utm') !== false)
-            $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $key . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $variable . '</td></tr>';
+      if(isset($url_parsed['query'])){
+        parse_str($url_parsed['query'], $url_variables);
+        if(!empty($url_variables)){
+          foreach($url_variables as $key => $variable) {
+            if(mb_strpos($key, 'utm') !== false)
+              $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $key . ':</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $variable . '</td></tr>';
+          }
         }
       }
+
+      $this->html .= '<tr><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">Страница:</td><td style="font-size: 12px; border-right: 1px solid #DDDDDD; border-bottom: 1px solid #DDDDDD; text-align: left; padding: 7px;">' . $this->request->server['HTTP_REFERER'] . '</td></tr>';
       $this->html .= '</tbody></table></body></html>';
 
       if(empty($this->error)){
