@@ -16,7 +16,7 @@
         form.find('.qf-box__btn').attr('disabled', true).css('cursor', 'wait');
       },
       success: function(data) {
-        form.parent().parent().html(data);
+        form.closest('.init').html(data);
       }
     });
   },
